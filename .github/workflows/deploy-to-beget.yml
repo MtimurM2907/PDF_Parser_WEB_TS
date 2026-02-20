@@ -1,0 +1,68 @@
+name: Deploy to Beget
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Позволяет запускать вручную из GitHub
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      
+      - name: Install dependencies (Frontend)
+        run: |
+          cd pdf_parser_web_ts.client
+          npm ci
+      
+      - name: Build Frontend
+        run: |
+          cd pdf_parser_web_ts.client
+          npm run build
+      
+      - name: Restore .NET dependencies
+        run: |
+          cd PDF_Parser_WEB_TS.Server
+          dotnet restore
+      
+      - name: Publish .NET application
+        run: |
+          cd PDF_Parser_WEB_TS.Server
+          dotnet publish -c Release -o ./publish
+      
+      - name: Create deployment archive
+        run: |
+          cd PDF_Parser_WEB_TS.Server/publish
+          tar -czf ../../deploy.tar.gz .
+          cd ../..
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-package
+          path: deploy.tar.gz
+          retention-days: 1
+      
+      - name: Deploy to Beget via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.BEGET_FTP_HOST }}
+          username: ${{ secrets.BEGET_FTP_USER }}
+          password: ${{ secrets.BEGET_FTP_PASSWORD }}
+          local-dir: ./PDF_Parser_WEB_TS.Server/publish/
+          server-dir: /public_html/
+          dangerous-clean-slate: false
