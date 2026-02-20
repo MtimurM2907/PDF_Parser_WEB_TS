@@ -36,19 +36,16 @@ jobs:
       
       - name: Clean .NET build artifacts
         run: |
-          cd PDF_Parser_WEB_TS.Server
-          dotnet clean -c Release
-          rm -rf bin obj
+          dotnet clean PDF_Parser_WEB_TS.Server/PDF_Parser_WEB_TS.Server.csproj -c Release
+          rm -rf PDF_Parser_WEB_TS.Server/bin PDF_Parser_WEB_TS.Server/obj
       
       - name: Restore .NET dependencies
         run: |
-          cd PDF_Parser_WEB_TS.Server
-          dotnet restore
+          dotnet restore PDF_Parser_WEB_TS.Server/PDF_Parser_WEB_TS.Server.csproj
       
       - name: Publish .NET application
         run: |
-          cd PDF_Parser_WEB_TS.Server
-          dotnet publish -c Release -o ./publish --no-build false
+          dotnet publish PDF_Parser_WEB_TS.Server/PDF_Parser_WEB_TS.Server.csproj -c Release -o PDF_Parser_WEB_TS.Server/publish
       
       - name: Create deployment archive
         run: |
