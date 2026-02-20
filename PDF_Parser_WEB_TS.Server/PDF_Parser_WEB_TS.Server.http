@@ -1,0 +1,6 @@
+@PDF_Parser_WEB_TS.Server_HostAddress = http://localhost:5184
+
+GET {{PDF_Parser_WEB_TS.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
