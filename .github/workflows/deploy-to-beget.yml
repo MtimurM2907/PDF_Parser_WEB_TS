@@ -57,6 +57,27 @@ jobs:
           path: deploy.tar.gz
           retention-days: 1
       
+      - name: Check FTP secrets
+        run: |
+          if [ -z "${{ secrets.BEGET_FTP_HOST }}" ]; then
+            echo "❌ BEGET_FTP_HOST не настроен"
+            exit 1
+          fi
+          if [ -z "${{ secrets.BEGET_FTP_USER }}" ]; then
+            echo "❌ BEGET_FTP_USER не настроен"
+            exit 1
+          fi
+          if [ -z "${{ secrets.BEGET_FTP_PASSWORD }}" ]; then
+            echo "❌ BEGET_FTP_PASSWORD не настроен"
+            exit 1
+          fi
+          echo "✅ Все секреты настроены"
+      
+      - name: List files to deploy
+        run: |
+          echo "Файлы для деплоя:"
+          ls -la PDF_Parser_WEB_TS.Server/publish/ | head -20
+      
       - name: Deploy to Beget via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -64,5 +85,10 @@ jobs:
           username: ${{ secrets.BEGET_FTP_USER }}
           password: ${{ secrets.BEGET_FTP_PASSWORD }}
           local-dir: ./PDF_Parser_WEB_TS.Server/publish/
-          server-dir: /public_html/
+          server-dir: ./public_html/
           dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.DS_Store
