@@ -34,6 +34,12 @@ jobs:
           cd pdf_parser_web_ts.client
           npm run build
       
+      - name: Clean .NET build artifacts
+        run: |
+          cd PDF_Parser_WEB_TS.Server
+          dotnet clean -c Release
+          rm -rf bin obj
+      
       - name: Restore .NET dependencies
         run: |
           cd PDF_Parser_WEB_TS.Server
@@ -42,7 +48,7 @@ jobs:
       - name: Publish .NET application
         run: |
           cd PDF_Parser_WEB_TS.Server
-          dotnet publish -c Release -o ./publish
+          dotnet publish -c Release -o ./publish --no-build false
       
       - name: Create deployment archive
         run: |
