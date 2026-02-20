@@ -8,7 +8,7 @@
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:53671</SpaProxyServerUrl>
     <SpaBuildCommand>npm run build</SpaBuildCommand>
-    <AssemblyName>PDF_Parser_WEB_TS.Server</AssemblyName>
+    <AssemblyName>PDF_Parser_WEB_TS_Server</AssemblyName>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
