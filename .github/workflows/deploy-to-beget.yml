@@ -36,8 +36,8 @@ jobs:
       
       - name: Clean .NET build artifacts
         run: |
-          dotnet clean PDF_Parser_WEB_TS.Server/PDF_Parser_WEB_TS.Server.csproj -c Release
-          rm -rf PDF_Parser_WEB_TS.Server/bin PDF_Parser_WEB_TS.Server/obj
+          rm -rf PDF_Parser_WEB_TS.Server/bin PDF_Parser_WEB_TS.Server/obj PDF_Parser_WEB_TS.Server/publish
+          dotnet clean PDF_Parser_WEB_TS.Server/PDF_Parser_WEB_TS.Server.csproj -c Release --verbosity quiet
       
       - name: Restore .NET dependencies
         run: |
