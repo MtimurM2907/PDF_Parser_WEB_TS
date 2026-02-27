@@ -41,6 +41,9 @@ dist/
 build/
 publish/
 
+## Frontend build output copied into backend (generated)
+PDF_Parser_WEB_TS.Server/wwwroot/
+
 ## Environment variables
 .env
 .env.local
