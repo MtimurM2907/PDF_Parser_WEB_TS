@@ -27,6 +27,10 @@ COPY . .
 # Подменяем wwwroot результатом сборки фронтенда
 COPY --from=frontend /workspace/PDF_Parser_WEB_TS.Server/wwwroot ./PDF_Parser_WEB_TS.Server/wwwroot
 
+# Очищаем возможные артефакты прошлых сборок (bin/obj), чтобы
+# Static Web Assets не ссылались на несуществующие файлы.
+RUN rm -rf ./PDF_Parser_WEB_TS.Server/bin ./PDF_Parser_WEB_TS.Server/obj
+
 RUN dotnet restore PDF_Parser_WEB_TS.Server/PDF_Parser_WEB_TS.Server.csproj
 RUN dotnet publish PDF_Parser_WEB_TS.Server/PDF_Parser_WEB_TS.Server.csproj -c Release -o /app/publish
 
