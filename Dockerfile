@@ -18,6 +18,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 WORKDIR /workspace
 
+# Устанавливаем Node.js, т.к. Microsoft.VisualStudio.JavaScript.Sdk
+# при публикации проекта проверяет наличие node и без него publish падает.
+RUN apt-get update && apt-get install -y nodejs
+
 COPY . .
 
 # Подменяем wwwroot результатом сборки фронтенда
