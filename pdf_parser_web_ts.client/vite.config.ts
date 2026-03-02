@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from 'node:url';
 
-import { defineConfig } from 'vite';
+import { defineConfig, type ConfigEnv, type UserConfig } from 'vite';
 import plugin from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
@@ -8,8 +8,8 @@ import child_process from 'child_process';
 import { env } from 'process';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command }) => {
-    const base = {
+export default defineConfig(({ command }: ConfigEnv): UserConfig => {
+    const base: UserConfig = {
         plugins: [plugin()],
         resolve: {
             alias: {
@@ -20,7 +20,7 @@ export default defineConfig(({ command }) => {
             outDir: '../PDF_Parser_WEB_TS.Server/wwwroot',
             emptyOutDir: true,
         },
-    } as const;
+    };
 
     // Сертификаты нужны только для локальной разработки (vite dev) вместе с ASP.NET dev-certs.
     // В CI/Docker сборке (vite build) сертификаты не создаём и не читаем.
